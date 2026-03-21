@@ -13,7 +13,7 @@
     "lint": "eslint src/",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": ["markdown", "parse", "llm", "table", "json"],
   "author": "",
   "license": "MIT",
   "engines": {
@@ -21,5 +21,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0"
   }
 }
