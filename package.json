@@ -1,6 +1,6 @@
 {
   "name": "md-to-data",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Parse LLM markdown responses into typed JSON objects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,13 @@
     "lint": "eslint src/",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["markdown", "parse", "llm", "table", "json"],
+  "keywords": [
+    "markdown",
+    "parse",
+    "llm",
+    "table",
+    "json"
+  ],
   "author": "",
   "license": "MIT",
   "engines": {
