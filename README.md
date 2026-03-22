@@ -3,6 +3,7 @@
 Parse LLM markdown responses into typed JSON objects.
 
 [![npm version](https://img.shields.io/npm/v/md-to-data.svg)](https://www.npmjs.com/package/md-to-data)
+[![npm downloads](https://img.shields.io/npm/dt/md-to-data.svg)](https://www.npmjs.com/package/md-to-data)
 [![license](https://img.shields.io/npm/l/md-to-data.svg)](https://github.com/SiluPanda/md-to-data/blob/master/LICENSE)
 [![node](https://img.shields.io/node/v/md-to-data.svg)](https://nodejs.org)
 
