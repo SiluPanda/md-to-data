@@ -7,32 +7,32 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 ## Phase 1: Project Setup and Scaffolding
 
 - [ ] **Install dev dependencies** — Add `typescript`, `vitest`, `eslint`, `@types/node` as devDependencies. Add `zod` as an optional peerDependency in package.json. | Status: not_done
-- [ ] **Configure ESLint** — Add `.eslintrc` or `eslint.config.js` with TypeScript support. Ensure `npm run lint` works against `src/`. | Status: not_done
-- [ ] **Configure Vitest** — Add `vitest.config.ts` if needed (or rely on package.json config). Verify `npm run test` runs and reports zero tests. | Status: not_done
+- [x] **Configure ESLint** — Add `.eslintrc` or `eslint.config.js` with TypeScript support. Ensure `npm run lint` works against `src/`. | Status: done
+- [x] **Configure Vitest** — Add `vitest.config.ts` if needed (or rely on package.json config). Verify `npm run test` runs and reports zero tests. | Status: done
 - [ ] **Create directory structure** — Create all directories specified in the file structure: `src/detection/`, `src/extraction/`, `src/inference/`, `src/normalization/`, `src/schema/`, `src/utils/`, `src/__tests__/`, `src/__tests__/fixtures/`. | Status: not_done
 - [ ] **Add CLI bin entry to package.json** — Add `"bin": { "md-to-data": "dist/cli.js" }` to package.json so the CLI is available after global install or via npx. | Status: not_done
-- [ ] **Verify build pipeline** — Run `npm run build` and confirm TypeScript compiles cleanly with the existing tsconfig.json. Fix any issues. | Status: not_done
+- [x] **Verify build pipeline** — Run `npm run build` and confirm TypeScript compiles cleanly with the existing tsconfig.json. Fix any issues. | Status: done
 
 ---
 
 ## Phase 2: TypeScript Type Definitions
 
-- [ ] **Define HeaderNormalization type** — `'preserve' | 'camelCase' | 'snake_case' | 'kebab-case' | 'lowercase'` in `src/types.ts`. | Status: not_done
+- [x] **Define HeaderNormalization type** — `'preserve' | 'camelCase' | 'snake_case' | 'kebab-case' | 'lowercase'` in `src/types.ts`. | Status: done
 - [ ] **Define PercentageMode type** — `'decimal' | 'number' | 'string'` in `src/types.ts`. | Status: not_done
 - [ ] **Define DateMode type** — `'date' | 'iso' | 'timestamp'` in `src/types.ts`. | Status: not_done
 - [ ] **Define CustomInferenceRule interface** — `{ name: string; test: (value: string) => boolean; transform: (value: string) => unknown }` in `src/types.ts`. | Status: not_done
-- [ ] **Define InferenceOptions interface** — All inference config fields: `enabled`, `nulls`, `booleans`, `numbers`, `dates`, `dateMode`, `arrays`, `currency`, `percentageMode`, `custom`. Include defaults in JSDoc. | Status: not_done
+- [x] **Define InferenceOptions interface** — All inference config fields: `enabled`, `nulls`, `booleans`, `numbers`, `dates`, `dateMode`, `arrays`, `currency`, `percentageMode`, `custom`. Include defaults in JSDoc. | Status: done
 - [ ] **Define ParseOptions interface** — Shared options: `inference`, `headerNormalization`, `stripMarkdown`, `minConfidence`. | Status: not_done
-- [ ] **Define ParseTableOptions interface** — Extends ParseOptions with `tableIndex`, `headerless`, `schema`, `schemaMode`. | Status: not_done
-- [ ] **Define ParseListOptions interface** — Extends ParseOptions with `listType: 'simple' | 'keyValue' | 'checkbox' | 'nested'`. | Status: not_done
-- [ ] **Define ParseSectionOptions interface** — Extends ParseOptions with `minLevel`, `maxLevel`. | Status: not_done
-- [ ] **Define ParseResult interface** — `{ tables, lists, keyValues, sections, meta }`. | Status: not_done
+- [x] **Define ParseTableOptions interface** — Extends ParseOptions with `tableIndex`, `headerless`, `schema`, `schemaMode`. | Status: done
+- [x] **Define ParseListOptions interface** — Extends ParseOptions with `listType: 'simple' | 'keyValue' | 'checkbox' | 'nested'`. | Status: done
+- [x] **Define ParseSectionOptions interface** — Extends ParseOptions with `minLevel`, `maxLevel`. | Status: done
+- [x] **Define ParseResult interface** — `{ tables, lists, keyValues, sections, meta }`. | Status: done
 - [ ] **Define ListResult interface** — `{ type, data, confidence }`. | Status: not_done
-- [ ] **Define CheckboxItem interface** — `{ text: string; checked: boolean }`. | Status: not_done
+- [x] **Define CheckboxItem interface** — `{ text: string; checked: boolean }`. | Status: done
 - [ ] **Define NestedItem interface** — `{ label: string; children: (string | NestedItem)[] }`. | Status: not_done
 - [ ] **Define ParseMeta interface** — `{ tableCount, listCount, keyValueCount, sectionCount, lowConfidence, durationMs, tables }`. | Status: not_done
 - [ ] **Define TableMeta interface** — `{ index, rawHeaders, normalizedHeaders, rowCount, alignments, hasSeparator, confidence, startLine, endLine }`. | Status: not_done
-- [ ] **Define Parser interface** — The factory-produced parser with `parse`, `parseTable`, `parseList`, `parseKeyValue`, `parseSections` methods. | Status: not_done
+- [x] **Define Parser interface** — The factory-produced parser with `parse`, `parseTable`, `parseList`, `parseKeyValue`, `parseSections` methods. | Status: done
 
 ---
 
@@ -40,23 +40,23 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 3a. Line Utilities (`src/utils/lines.ts`)
 
-- [ ] **Implement line splitting** — Split input string into lines, handling `\n`, `\r\n`, and `\r`. | Status: not_done
+- [x] **Implement line splitting** — Split input string into lines, handling `\n`, `\r\n`, and `\r`. | Status: done
 - [ ] **Implement line classification** — Classify each line as: table-row, list-item, checkbox-item, key-value, header, separator, code-fence, blank, or prose. | Status: not_done
 - [ ] **Implement indentation detection** — Detect indent level for nested lists (2 spaces, 4 spaces, or 1 tab per level). | Status: not_done
 - [ ] **Implement code fence tracking** — Track whether the current line is inside a code fence (triple backticks or triple tildes) to exclude code blocks from parsing. | Status: not_done
 
 ### 3b. Shared Patterns (`src/utils/patterns.ts`)
 
-- [ ] **Define table row regex** — Pattern to detect lines containing unescaped pipe characters. | Status: not_done
-- [ ] **Define separator row regex** — Pattern matching `|---|---|` with optional colons for alignment: `/^[\s|:\-]+$/`. | Status: not_done
-- [ ] **Define unordered list item regex** — `/^(\s*)[*+-]\s+(.+)$/`. | Status: not_done
-- [ ] **Define ordered list item regex** — `/^(\s*)\d+[.)]\s+(.+)$/`. | Status: not_done
-- [ ] **Define checkbox item regex** — `/^(\s*)[*+-]\s+\[([ xX])\]\s+(.+)$/`. | Status: not_done
-- [ ] **Define bold-key colon regex** — `/^\*\*(.+?)\*\*:\s*(.+)$/` for `**Key**: Value`. | Status: not_done
+- [x] **Define table row regex** — Pattern to detect lines containing unescaped pipe characters. | Status: done
+- [x] **Define separator row regex** — Pattern matching `|---|---|` with optional colons for alignment: `/^[\s|:\-]+$/`. | Status: done
+- [x] **Define unordered list item regex** — `/^(\s*)[*+-]\s+(.+)$/`. | Status: done
+- [x] **Define ordered list item regex** — `/^(\s*)\d+[.)]\s+(.+)$/`. | Status: done
+- [x] **Define checkbox item regex** — `/^(\s*)[*+-]\s+\[([ xX])\]\s+(.+)$/`. | Status: done
+- [x] **Define bold-key colon regex** — `/^\*\*(.+?)\*\*:\s*(.+)$/` for `**Key**: Value`. | Status: done
 - [ ] **Define bold-key colon-inside regex** — `/^\*\*(.+?):\*\*\s*(.+)$/` for `**Key:** Value`. | Status: not_done
-- [ ] **Define plain colon key-value regex** — `/^([^:]{1,50}):\s+(.+)$/`. | Status: not_done
-- [ ] **Define definition list regex** — Pattern matching `term\n: definition`. | Status: not_done
-- [ ] **Define header regex** — `/^(#{1,6})\s+(.+)$/` for markdown headers. | Status: not_done
+- [x] **Define plain colon key-value regex** — `/^([^:]{1,50}):\s+(.+)$/`. | Status: done
+- [x] **Define definition list regex** — Pattern matching `term\n: definition`. | Status: done
+- [x] **Define header regex** — `/^(#{1,6})\s+(.+)$/` for markdown headers. | Status: done
 - [ ] **Define URL exclusion pattern** — `/^https?:/`, `ftp:/`, `mailto:` to exclude colons in URLs from key-value detection. | Status: not_done
 - [ ] **Define horizontal rule regex** — Pattern for `---`, `***`, `___` lines to exclude from table detection. | Status: not_done
 
@@ -66,20 +66,20 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 4a. Header Normalization (`src/normalization/headers.ts`)
 
-- [ ] **Implement `preserve` mode** — Return header text as-is (after markdown stripping). | Status: not_done
-- [ ] **Implement `camelCase` mode** — Convert "First Name" to "firstName", handle multi-word headers. | Status: not_done
-- [ ] **Implement `snake_case` mode** — Convert "First Name" to "first_name". | Status: not_done
-- [ ] **Implement `kebab-case` mode** — Convert "First Name" to "first-name". | Status: not_done
-- [ ] **Implement `lowercase` mode** — Convert "First Name" to "first name". | Status: not_done
-- [ ] **Strip markdown from headers before normalizing** — Remove `**bold**`, `` `code` ``, `[Link](url)`, `*italic*` formatting from header text. | Status: not_done
+- [x] **Implement `preserve` mode** — Return header text as-is (after markdown stripping). | Status: done
+- [x] **Implement `camelCase` mode** — Convert "First Name" to "firstName", handle multi-word headers. | Status: done
+- [x] **Implement `snake_case` mode** — Convert "First Name" to "first_name". | Status: done
+- [x] **Implement `kebab-case` mode** — Convert "First Name" to "first-name". | Status: done
+- [x] **Implement `lowercase` mode** — Convert "First Name" to "first name". | Status: done
+- [x] **Strip markdown from headers before normalizing** — Remove `**bold**`, `` `code` ``, `[Link](url)`, `*italic*` formatting from header text. | Status: done
 
 ### 4b. Markdown Stripping (`src/normalization/markdown-strip.ts`)
 
-- [ ] **Strip bold formatting** — `**text**` and `__text__` become `text`. | Status: not_done
-- [ ] **Strip italic formatting** — `*text*` and `_text_` become `text`. | Status: not_done
-- [ ] **Strip inline code** — `` `code` `` becomes `code`. | Status: not_done
-- [ ] **Strip links** — `[text](url)` becomes `text`. | Status: not_done
-- [ ] **Strip images** — `![alt](url)` becomes `alt`. | Status: not_done
+- [x] **Strip bold formatting** — `**text**` and `__text__` become `text`. | Status: done
+- [x] **Strip italic formatting** — `*text*` and `_text_` become `text`. | Status: done
+- [x] **Strip inline code** — `` `code` `` becomes `code`. | Status: done
+- [x] **Strip links** — `[text](url)` becomes `text`. | Status: done
+- [x] **Strip images** — `![alt](url)` becomes `alt`. | Status: done
 - [ ] **Replace `<br>` and `<br/>` with newline** — HTML line breaks in cells become `\n`. | Status: not_done
 - [ ] **Support configurable stripping** — When `stripMarkdown: false`, preserve formatting. | Status: not_done
 
@@ -89,35 +89,35 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 5a. Inference Orchestrator (`src/inference/index.ts`)
 
-- [ ] **Implement inference pipeline** — Accept a string value and InferenceOptions, apply rules in priority order, return inferred value. | Status: not_done
-- [ ] **Support disabling all inference** — When `inference: false` or `inference.enabled: false`, return string as-is. | Status: not_done
+- [x] **Implement inference pipeline** — Accept a string value and InferenceOptions, apply rules in priority order, return inferred value. | Status: done
+- [x] **Support disabling all inference** — When `inference: false` or `inference.enabled: false`, return string as-is. | Status: done
 - [ ] **Support custom inference rules** — Check custom rules (from `inference.custom`) before built-in rules. First match wins. | Status: not_done
-- [ ] **Support per-type enable/disable** — Each built-in rule (nulls, booleans, numbers, dates, arrays) can be individually toggled. | Status: not_done
+- [x] **Support per-type enable/disable** — Each built-in rule (nulls, booleans, numbers, dates, arrays) can be individually toggled. | Status: done
 
 ### 5b. Null Detection (`src/inference/null.ts`)
 
-- [ ] **Detect null strings** — Map `""`, `"N/A"`, `"n/a"`, `"NA"`, `"None"`, `"none"`, `"null"`, `"NULL"`, `"-"`, `"--"`, `"---"`, em dash (`"\u2014"`), `"undefined"` to `null`. Case-insensitive where applicable. | Status: not_done
-- [ ] **Respect `inference.nulls` toggle** — Only apply when `nulls` is true (default). | Status: not_done
+- [x] **Detect null strings** — Map `""`, `"N/A"`, `"n/a"`, `"NA"`, `"None"`, `"none"`, `"null"`, `"NULL"`, `"-"`, `"--"`, `"---"`, em dash (`"\u2014"`), `"undefined"` to `null`. Case-insensitive where applicable. | Status: done
+- [x] **Respect `inference.nulls` toggle** — Only apply when `nulls` is true (default). | Status: done
 
 ### 5c. Boolean Detection (`src/inference/boolean.ts`)
 
-- [ ] **Detect truthy strings** — `"true"`, `"True"`, `"TRUE"`, `"yes"`, `"Yes"`, `"on"`, `"enabled"` map to `true`. Case-insensitive. | Status: not_done
-- [ ] **Detect falsy strings** — `"false"`, `"False"`, `"FALSE"`, `"no"`, `"No"`, `"off"`, `"disabled"` map to `false`. Case-insensitive. | Status: not_done
-- [ ] **Context-sensitive detection** — Only infer boolean when the trimmed string is exactly a boolean keyword (standalone), not part of a longer string. | Status: not_done
-- [ ] **Respect `inference.booleans` toggle** — Only apply when `booleans` is true (default). | Status: not_done
+- [x] **Detect truthy strings** — `"true"`, `"True"`, `"TRUE"`, `"yes"`, `"Yes"`, `"on"`, `"enabled"` map to `true`. Case-insensitive. | Status: done
+- [x] **Detect falsy strings** — `"false"`, `"False"`, `"FALSE"`, `"no"`, `"No"`, `"off"`, `"disabled"` map to `false`. Case-insensitive. | Status: done
+- [x] **Context-sensitive detection** — Only infer boolean when the trimmed string is exactly a boolean keyword (standalone), not part of a longer string. | Status: done
+- [x] **Respect `inference.booleans` toggle** — Only apply when `booleans` is true (default). | Status: done
 
 ### 5d. Number Detection (`src/inference/number.ts`)
 
-- [ ] **Detect integers** — `"42"`, `"-7"`, `"0"` become numbers. | Status: not_done
-- [ ] **Detect floats** — `"3.14"`, `"-0.5"` become numbers. | Status: not_done
+- [x] **Detect integers** — `"42"`, `"-7"`, `"0"` become numbers. | Status: done
+- [x] **Detect floats** — `"3.14"`, `"-0.5"` become numbers. | Status: done
 - [ ] **Detect comma-separated numbers** — `"1,000"`, `"1,234.56"` become numbers (commas stripped). | Status: not_done
-- [ ] **Detect scientific notation** — `"1.5e10"`, `"2E-3"` become numbers. | Status: not_done
+- [x] **Detect scientific notation** — `"1.5e10"`, `"2E-3"` become numbers. | Status: done
 - [ ] **Detect percentages** — `"95%"` maps to `0.95` (decimal mode), `95` (number mode), or stays `"95%"` (string mode), based on `percentageMode`. | Status: not_done
 - [ ] **Detect currency-prefixed numbers** — `"$100"` becomes `100` when `inference.currency` is true. Strip `$`, `EUR`, `GBP`, etc. | Status: not_done
 - [ ] **Exclude phone numbers** — `"555-1234"`, `"+1-800-555-0199"` are not numbers. | Status: not_done
 - [ ] **Exclude version numbers** — `"1.2.3"`, `"v2.0"` (multiple dots or leading `v`) are not numbers. | Status: not_done
 - [ ] **Exclude ZIP codes with leading zero** — `"02101"` stays as string. But `"0"` and `"0.5"` are valid numbers. | Status: not_done
-- [ ] **Respect `inference.numbers` toggle** — Only apply when `numbers` is true (default). | Status: not_done
+- [x] **Respect `inference.numbers` toggle** — Only apply when `numbers` is true (default). | Status: done
 
 ### 5e. Date Detection (`src/inference/date.ts`)
 
@@ -143,33 +143,33 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 6a. Table Detector (`src/detection/table-detector.ts`)
 
-- [ ] **Detect table boundaries** — Scan lines for consecutive pipe-delimited rows. Identify start/end line indices. | Status: not_done
-- [ ] **Detect separator row** — Identify rows matching `/^[\s|:\-]+$/`. Separate header from body. | Status: not_done
+- [x] **Detect table boundaries** — Scan lines for consecutive pipe-delimited rows. Identify start/end line indices. | Status: done
+- [x] **Detect separator row** — Identify rows matching `/^[\s|:\-]+$/`. Separate header from body. | Status: done
 - [ ] **Handle missing separator row** — When no separator found, treat first row as header with reduced confidence (0.7). | Status: not_done
 - [ ] **Handle malformed separator** — If separator row contains non-separator characters, treat as data row, confidence 0.6. | Status: not_done
 - [ ] **Validate column count consistency** — All rows should have consistent column count (within tolerance of 1). | Status: not_done
 - [ ] **Require minimum 2 rows** — At least header + 1 data row. | Status: not_done
 - [ ] **Skip lines inside code fences** — Do not detect tables inside fenced code blocks. | Status: not_done
-- [ ] **Detect multiple tables** — Identify all table regions separated by non-table content. | Status: not_done
+- [x] **Detect multiple tables** — Identify all table regions separated by non-table content. | Status: done
 - [ ] **Detect column alignment** — Parse `:---`, `:---:`, `---:` from separator row. Report as `'left' | 'center' | 'right'`. | Status: not_done
 
 ### 6b. List Detector (`src/detection/list-detector.ts`)
 
-- [ ] **Detect unordered list boundaries** — Consecutive lines matching `-`, `*`, `+` markers. | Status: not_done
-- [ ] **Detect ordered list boundaries** — Consecutive lines matching `\d+[.)]\s`. | Status: not_done
-- [ ] **Detect checkbox lists** — Lines with `- [ ]` or `- [x]`/`- [X]` patterns. If at least one checkbox item, treat entire list as checkbox list. | Status: not_done
-- [ ] **Handle mixed list markers** — Treat `-`, `*`, `+` as equivalent unordered markers. | Status: not_done
-- [ ] **Handle non-sequential numbering** — `1. 1. 1.` or skipped numbers still form a valid ordered list. | Status: not_done
+- [x] **Detect unordered list boundaries** — Consecutive lines matching `-`, `*`, `+` markers. | Status: done
+- [x] **Detect ordered list boundaries** — Consecutive lines matching `\d+[.)]\s`. | Status: done
+- [x] **Detect checkbox lists** — Lines with `- [ ]` or `- [x]`/`- [X]` patterns. If at least one checkbox item, treat entire list as checkbox list. | Status: done
+- [x] **Handle mixed list markers** — Treat `-`, `*`, `+` as equivalent unordered markers. | Status: done
+- [x] **Handle non-sequential numbering** — `1. 1. 1.` or skipped numbers still form a valid ordered list. | Status: done
 - [ ] **Handle blank lines within lists** — Blank lines between items do not break the list unless followed by non-list content. | Status: not_done
 - [ ] **Detect continuation lines** — Indented lines following a list item belong to that item. | Status: not_done
 - [ ] **Detect nested lists** — Indented list items form child lists. | Status: not_done
 
 ### 6c. Key-Value Detector (`src/detection/kv-detector.ts`)
 
-- [ ] **Detect bold-key colon pattern** — `**Key**: Value` lines. Confidence 0.95. | Status: not_done
+- [x] **Detect bold-key colon pattern** — `**Key**: Value` lines. Confidence 0.95. | Status: done
 - [ ] **Detect bold-key colon-inside pattern** — `**Key:** Value` lines. Confidence 0.95. | Status: not_done
-- [ ] **Detect plain colon pattern** — `Key: Value` lines in consecutive groups. Confidence 0.7. | Status: not_done
-- [ ] **Detect definition list pattern** — `Term\n: Definition`. Confidence 0.85. | Status: not_done
+- [x] **Detect plain colon pattern** — `Key: Value` lines in consecutive groups. Confidence 0.7. | Status: done
+- [x] **Detect definition list pattern** — `Term\n: Definition`. Confidence 0.85. | Status: done
 - [ ] **Detect key-value in list items** — `- **Key**: Value` or `- Key: Value`. Confidence 0.8-0.9. | Status: not_done
 - [ ] **Apply URL exclusion** — Do not treat `http:`, `https:`, `ftp:`, `mailto:` as key-value separators. | Status: not_done
 - [ ] **Apply time exclusion** — Colons in time values (`3:45 PM`) are not key-value separators. | Status: not_done
@@ -179,10 +179,10 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 6d. Section Detector (`src/detection/section-detector.ts`)
 
-- [ ] **Detect headers** — Lines matching `# ` through `###### `. Extract level (1-6) and text. | Status: not_done
-- [ ] **Detect section boundaries** — Content between consecutive headers forms a section body. | Status: not_done
+- [x] **Detect headers** — Lines matching `# ` through `###### `. Extract level (1-6) and text. | Status: done
+- [x] **Detect section boundaries** — Content between consecutive headers forms a section body. | Status: done
 - [ ] **Handle nested headers** — Lower-level headers nested within higher-level sections. | Status: not_done
-- [ ] **Respect `minLevel` and `maxLevel`** — Only extract headers within the configured level range. | Status: not_done
+- [x] **Respect `minLevel` and `maxLevel`** — Only extract headers within the configured level range. | Status: done
 
 ### 6e. Detection Orchestrator (`src/detection/index.ts`)
 
@@ -194,27 +194,27 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 7a. Table Extractor (`src/extraction/table-extractor.ts`)
 
-- [ ] **Implement row parsing** — Split rows on unescaped pipes. Handle escaped pipes (`\|`). Strip leading/trailing empty cells from outer pipes. Trim cell whitespace. | Status: not_done
-- [ ] **Extract headers** — Parse first row (or row above separator) as headers. Apply header normalization. Strip markdown from headers. | Status: not_done
-- [ ] **Map data rows to objects** — Use normalized headers as keys. Apply type inference to each cell value. | Status: not_done
-- [ ] **Handle missing cells** — Rows with fewer cells than headers get `null` for missing positions. | Status: not_done
-- [ ] **Handle extra cells** — Rows with more cells than headers: extra cells are ignored, noted in metadata. | Status: not_done
+- [x] **Implement row parsing** — Split rows on unescaped pipes. Handle escaped pipes (`\|`). Strip leading/trailing empty cells from outer pipes. Trim cell whitespace. | Status: done
+- [x] **Extract headers** — Parse first row (or row above separator) as headers. Apply header normalization. Strip markdown from headers. | Status: done
+- [x] **Map data rows to objects** — Use normalized headers as keys. Apply type inference to each cell value. | Status: done
+- [x] **Handle missing cells** — Rows with fewer cells than headers get `null` for missing positions. | Status: done
+- [x] **Handle extra cells** — Rows with more cells than headers: extra cells are ignored, noted in metadata. | Status: done
 - [ ] **Handle inconsistent column counts** — Rows differing by more than 2 columns from header count are skipped, noted in metadata. | Status: not_done
 - [ ] **Handle headerless tables** — When `headerless: true`, generate keys as `column1`, `column2`, etc. | Status: not_done
 - [ ] **Handle tables without headers heuristic** — When no separator and no `headerless` flag, heuristically detect if first row is headers (short, title-cased) vs data. Confidence 0.6. | Status: not_done
-- [ ] **Handle markdown in cells** — Strip bold, italic, code, links from cell values by default. Preserve with `stripMarkdown: false`. | Status: not_done
-- [ ] **Support `tableIndex` option** — Select specific table by zero-based index. Default: 0. | Status: not_done
+- [x] **Handle markdown in cells** — Strip bold, italic, code, links from cell values by default. Preserve with `stripMarkdown: false`. | Status: done
+- [x] **Support `tableIndex` option** — Select specific table by zero-based index. Default: 0. | Status: done
 - [ ] **Build TableMeta** — Populate metadata: index, rawHeaders, normalizedHeaders, rowCount, alignments, hasSeparator, confidence, startLine, endLine. | Status: not_done
 
 ### 7b. List Extractor (`src/extraction/list-extractor.ts`)
 
-- [ ] **Extract simple lists** — List items without key-value patterns become string arrays. Apply type inference to each item. | Status: not_done
+- [x] **Extract simple lists** — List items without key-value patterns become string arrays. Apply type inference to each item. | Status: done
 - [ ] **Extract key-value lists** — When >=50% items match key-value patterns, extract as object. Normalize keys. Apply type inference to values. | Status: not_done
 - [ ] **Handle bold-key colon pattern in list** — `- **Key**: Value`. | Status: not_done
 - [ ] **Handle bold-key colon-inside pattern in list** — `- **Key:** Value`. | Status: not_done
 - [ ] **Handle plain colon pattern in list** — `- Key: Value`. | Status: not_done
 - [ ] **Handle non-matching items in key-value list** — Items that don't match pattern get auto-generated keys or go to `_other` array. | Status: not_done
-- [ ] **Extract checkbox lists** — Items with `[x]`/`[X]` get `checked: true`, `[ ]` get `checked: false`. Return `{ text, checked }[]`. | Status: not_done
+- [x] **Extract checkbox lists** — Items with `[x]`/`[X]` get `checked: true`, `[ ]` get `checked: false`. Return `{ text, checked }[]`. | Status: done
 - [ ] **Handle mixed checkbox/non-checkbox** — Non-checkbox items in a checkbox list treated as unchecked. | Status: not_done
 - [ ] **Extract nested lists** — Build tree structure from indentation. Parent items get `{ label, children }`. Leaf items are plain strings. | Status: not_done
 - [ ] **Handle multi-line list items** — Concatenate continuation lines (indented beyond list level) to the parent item with space separator. | Status: not_done
@@ -222,13 +222,13 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 7c. Key-Value Extractor (`src/extraction/kv-extractor.ts`)
 
-- [ ] **Extract bold-key colon pairs** — Parse `**Key**: Value` lines into object entries. Normalize keys. | Status: not_done
+- [x] **Extract bold-key colon pairs** — Parse `**Key**: Value` lines into object entries. Normalize keys. | Status: done
 - [ ] **Extract bold-key colon-inside pairs** — Parse `**Key:** Value` lines. | Status: not_done
-- [ ] **Extract plain colon pairs** — Parse `Key: Value` lines into object entries. | Status: not_done
-- [ ] **Extract definition lists** — Parse `Term\n: Definition` into object entries. | Status: not_done
+- [x] **Extract plain colon pairs** — Parse `Key: Value` lines into object entries. | Status: done
+- [x] **Extract definition lists** — Parse `Term\n: Definition` into object entries. | Status: done
 - [ ] **Extract header-grouped key-values** — Nest key-value pairs under their parent header key. | Status: not_done
 - [ ] **Handle multi-line values** — Concatenate indented continuation lines to the value. | Status: not_done
-- [ ] **Apply type inference to all values** — Every extracted value passes through the inference pipeline. | Status: not_done
+- [x] **Apply type inference to all values** — Every extracted value passes through the inference pipeline. | Status: done
 - [ ] **Apply confidence scoring** — Each extraction group gets a confidence score based on its pattern type. | Status: not_done
 
 ### 7d. Section Extractor (`src/extraction/section-extractor.ts`)
@@ -244,29 +244,29 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 8a. `parseTable()` (`src/parseTable.ts`)
 
-- [ ] **Implement parseTable function** — Accept markdown string and optional ParseTableOptions. Detect tables, extract the one at `tableIndex` (default 0), return `Record<string, unknown>[]`. | Status: not_done
+- [x] **Implement parseTable function** — Accept markdown string and optional ParseTableOptions. Detect tables, extract the one at `tableIndex` (default 0), return `Record<string, unknown>[]`. | Status: done
 - [ ] **Support generic type parameter** — `parseTable<T>(md)` returns `T[]` for compile-time type safety. | Status: not_done
-- [ ] **Return empty array when no table found** — Never throw on valid input with no table. | Status: not_done
+- [x] **Return empty array when no table found** — Never throw on valid input with no table. | Status: done
 
 ### 8b. `parseList()` (`src/parseList.ts`)
 
-- [ ] **Implement parseList function** — Accept markdown string and optional ParseListOptions. Auto-detect list type and extract accordingly. | Status: not_done
+- [x] **Implement parseList function** — Accept markdown string and optional ParseListOptions. Auto-detect list type and extract accordingly. | Status: done
 - [ ] **Return appropriate type based on list content** — Simple list returns `string[]`/`unknown[]`, key-value list returns `Record<string, unknown>`, checkbox list returns `CheckboxItem[]`, nested list returns `NestedItem[]`. | Status: not_done
-- [ ] **Return empty array when no list found** — Never throw on valid input. | Status: not_done
+- [x] **Return empty array when no list found** — Never throw on valid input. | Status: done
 
 ### 8c. `parseKeyValue()` (`src/parseKeyValue.ts`)
 
-- [ ] **Implement parseKeyValue function** — Accept markdown string. Detect and extract key-value pairs into `Record<string, unknown>`. | Status: not_done
-- [ ] **Return empty object when no key-values found** — Never throw on valid input. | Status: not_done
+- [x] **Implement parseKeyValue function** — Accept markdown string. Detect and extract key-value pairs into `Record<string, unknown>`. | Status: done
+- [x] **Return empty object when no key-values found** — Never throw on valid input. | Status: done
 
 ### 8d. `parseSections()` (`src/parseSections.ts`)
 
-- [ ] **Implement parseSections function** — Accept markdown string and optional ParseSectionOptions. Extract header-delimited sections into nested `Record<string, unknown>`. | Status: not_done
-- [ ] **Return empty object when no sections found** — Never throw on valid input. | Status: not_done
+- [x] **Implement parseSections function** — Accept markdown string and optional ParseSectionOptions. Extract header-delimited sections into nested `Record<string, unknown>`. | Status: done
+- [x] **Return empty object when no sections found** — Never throw on valid input. | Status: done
 
 ### 8e. `parse()` / `parseAll()` (`src/parse.ts`)
 
-- [ ] **Implement parse function** — Auto-detect all structures in markdown and return unified ParseResult with `tables`, `lists`, `keyValues`, `sections`, and `meta`. | Status: not_done
+- [x] **Implement parse function** — Auto-detect all structures in markdown and return unified ParseResult with `tables`, `lists`, `keyValues`, `sections`, and `meta`. | Status: done
 - [ ] **Implement parseAll function** — Alias or full version of parse that returns all structures with metadata. | Status: not_done
 - [ ] **Populate ParseMeta** — Include `tableCount`, `listCount`, `keyValueCount`, `sectionCount`, `lowConfidence`, `durationMs`, per-table metadata. | Status: not_done
 - [ ] **Apply minConfidence filtering** — Structures below `minConfidence` threshold are excluded from results but included in `meta.lowConfidence`. | Status: not_done
@@ -274,12 +274,12 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 8f. `createParser()` Factory (`src/factory.ts`)
 
-- [ ] **Implement createParser function** — Accept ParseOptions, return a Parser instance with preset options. All methods on the parser use the preset options merged with per-call options. | Status: not_done
+- [x] **Implement createParser function** — Accept ParseOptions, return a Parser instance with preset options. All methods on the parser use the preset options merged with per-call options. | Status: done
 
 ### 8g. Public Exports (`src/index.ts`)
 
-- [ ] **Export all public API functions** — `parse`, `parseAll`, `parseTable`, `parseList`, `parseKeyValue`, `parseSections`, `createParser`. | Status: not_done
-- [ ] **Export all public types** — All interfaces and type aliases from `types.ts`. | Status: not_done
+- [x] **Export all public API functions** — `parse`, `parseAll`, `parseTable`, `parseList`, `parseKeyValue`, `parseSections`, `createParser`. | Status: done
+- [x] **Export all public types** — All interfaces and type aliases from `types.ts`. | Status: done
 
 ---
 
@@ -416,46 +416,46 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ### 13a. Table Tests (`src/__tests__/parseTable.test.ts`)
 
-- [ ] **Test standard GFM table extraction** — Correct headers, values, types. | Status: not_done
+- [x] **Test standard GFM table extraction** — Correct headers, values, types. | Status: done
 - [ ] **Test table without outer pipes** — Headers and values still extracted correctly. | Status: not_done
 - [ ] **Test table without separator row** — First row treated as headers, confidence 0.7. | Status: not_done
 - [ ] **Test table with alignment markers** — Alignment info in metadata, values unaffected. | Status: not_done
-- [ ] **Test table with empty cells** — Empty cells become null (with inference) or empty string. | Status: not_done
+- [x] **Test table with empty cells** — Empty cells become null (with inference) or empty string. | Status: done
 - [ ] **Test table with nested markdown** — Bold, code, links stripped from cell values by default. | Status: not_done
 - [ ] **Test table with escaped pipes** — `\|` preserved as literal `|` in cell content. | Status: not_done
 - [ ] **Test table with misaligned columns** — Varying whitespace handled correctly. | Status: not_done
-- [ ] **Test numeric type inference in tables** — Numbers correctly inferred. | Status: not_done
-- [ ] **Test boolean type inference in tables** — "Yes"/"No" correctly inferred. | Status: not_done
-- [ ] **Test null type inference in tables** — "N/A", "-" correctly inferred as null. | Status: not_done
-- [ ] **Test multi-word header normalization** — All five normalization modes tested. | Status: not_done
-- [ ] **Test multiple tables with tableIndex** — Correct table selected by index. | Status: not_done
+- [x] **Test numeric type inference in tables** — Numbers correctly inferred. | Status: done
+- [x] **Test boolean type inference in tables** — "Yes"/"No" correctly inferred. | Status: done
+- [x] **Test null type inference in tables** — "N/A", "-" correctly inferred as null. | Status: done
+- [x] **Test multi-word header normalization** — All five normalization modes tested. | Status: done
+- [x] **Test multiple tables with tableIndex** — Correct table selected by index. | Status: done
 - [ ] **Test table embedded in prose** — Preamble/postamble ignored. | Status: not_done
 - [ ] **Test headerless table** — Generated column1, column2 keys. | Status: not_done
 - [ ] **Test missing cells** — Null for missing positions. | Status: not_done
 - [ ] **Test extra cells** — Extra cells ignored. | Status: not_done
 - [ ] **Test stripMarkdown: false** — Formatting preserved in cells. | Status: not_done
-- [ ] **Test inference: false** — All values remain strings. | Status: not_done
-- [ ] **Test returns empty array when no table** — `parseTable("no table here")` returns `[]`. | Status: not_done
+- [x] **Test inference: false** — All values remain strings. | Status: done
+- [x] **Test returns empty array when no table** — `parseTable("no table here")` returns `[]`. | Status: done
 
 ### 13b. List Tests (`src/__tests__/parseList.test.ts`)
 
-- [ ] **Test simple unordered list extraction** — All three marker types. | Status: not_done
-- [ ] **Test simple ordered list extraction** — Period and parenthesis formats. | Status: not_done
+- [x] **Test simple unordered list extraction** — All three marker types. | Status: done
+- [x] **Test simple ordered list extraction** — Period and parenthesis formats. | Status: done
 - [ ] **Test key-value list with bold keys** — Returns object with normalized keys. | Status: not_done
 - [ ] **Test key-value list with plain keys** — Returns object with normalized keys. | Status: not_done
-- [ ] **Test checkbox list extraction** — Correct `{ text, checked }` for each item. | Status: not_done
+- [x] **Test checkbox list extraction** — Correct `{ text, checked }` for each item. | Status: done
 - [ ] **Test nested list extraction** — Correct tree structure with `{ label, children }`. | Status: not_done
 - [ ] **Test multi-line list items** — Continuation lines concatenated. | Status: not_done
-- [ ] **Test mixed markers** — `-`, `*`, `+` treated equivalently. | Status: not_done
+- [x] **Test mixed markers** — `-`, `*`, `+` treated equivalently. | Status: done
 - [ ] **Test type inference in list values** — Numbers, booleans inferred in list items. | Status: not_done
 - [ ] **Test listType option** — Force specific list type. | Status: not_done
-- [ ] **Test returns empty array when no list** — `parseList("no list here")` returns `[]`. | Status: not_done
+- [x] **Test returns empty array when no list** — `parseList("no list here")` returns `[]`. | Status: done
 
 ### 13c. Key-Value Tests (`src/__tests__/parseKeyValue.test.ts`)
 
-- [ ] **Test bold-key colon extraction** — Correct object with normalized keys. | Status: not_done
+- [x] **Test bold-key colon extraction** — Correct object with normalized keys. | Status: done
 - [ ] **Test bold-key colon-inside extraction** — Correct object. | Status: not_done
-- [ ] **Test plain colon extraction** — Consecutive lines become object. | Status: not_done
+- [x] **Test plain colon extraction** — Consecutive lines become object. | Status: done
 - [ ] **Test definition list extraction** — `Term\n: Definition` becomes object. | Status: not_done
 - [ ] **Test header-grouped key-values** — Nested objects under header keys. | Status: not_done
 - [ ] **Test multi-line value extraction** — Indented continuation lines concatenated. | Status: not_done
@@ -463,19 +463,19 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 - [ ] **Test time exclusion** — Time colons not treated as key-value separator. | Status: not_done
 - [ ] **Test sentence exclusion** — Long "keys" (>6 words) not treated as keys. | Status: not_done
 - [ ] **Test minimum group size** — Single isolated `Key: Value` line not extracted. | Status: not_done
-- [ ] **Test type inference on values** — Numbers, booleans, nulls inferred. | Status: not_done
+- [x] **Test type inference on values** — Numbers, booleans, nulls inferred. | Status: done
 - [ ] **Test returns empty object when no key-values** — `parseKeyValue("no pairs")` returns `{}`. | Status: not_done
 
 ### 13d. Section Tests (`src/__tests__/parseSections.test.ts`)
 
-- [ ] **Test single-level section extraction** — Correct keys and text values. | Status: not_done
+- [x] **Test single-level section extraction** — Correct keys and text values. | Status: done
 - [ ] **Test multi-level nested sections** — Correct nested object structure. | Status: not_done
 - [ ] **Test section with table body** — Section value is extracted table data. | Status: not_done
 - [ ] **Test section with list body** — Section value is extracted list. | Status: not_done
 - [ ] **Test section with key-value body** — Section value is extracted object. | Status: not_done
-- [ ] **Test section with prose body** — Section value is text string. | Status: not_done
-- [ ] **Test minLevel and maxLevel options** — Headers outside range excluded. | Status: not_done
-- [ ] **Test returns empty object when no sections** — `parseSections("no headers")` returns `{}`. | Status: not_done
+- [x] **Test section with prose body** — Section value is text string. | Status: done
+- [x] **Test minLevel and maxLevel options** — Headers outside range excluded. | Status: done
+- [x] **Test returns empty object when no sections** — `parseSections("no headers")` returns `{}`. | Status: done
 
 ### 13e. Parse/ParseAll Tests (`src/__tests__/parse.test.ts`)
 
@@ -553,7 +553,7 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 ## Phase 14: Performance
 
 - [ ] **Implement single-pass line scanning** — Classify all lines in one pass before extraction. | Status: not_done
-- [ ] **Pre-compile all regex patterns** — All regex compiled at module load time, not per call. | Status: not_done
+- [x] **Pre-compile all regex patterns** — All regex compiled at module load time, not per call. | Status: done
 - [ ] **Implement early termination for targeted functions** — `parseTable()` stops after finding the requested table. `parseList()` stops after the first list (unless parseAll). | Status: not_done
 - [ ] **Create benchmark suite** — Measure extraction time for small (200B), medium (1KB, 5KB), large (50KB), and very large (100KB) inputs. | Status: not_done
 - [ ] **Verify performance targets** — 200B < 0.05ms, 1KB < 0.1ms, 5KB < 0.3ms, 50KB < 3ms, 100KB < 10ms. | Status: not_done
@@ -571,9 +571,9 @@ All tasks derived from SPEC.md. Organized by implementation phase.
 
 ## Phase 16: Final Polish and Publishing Prep
 
-- [ ] **Verify zero runtime dependencies** — Confirm package.json has no `dependencies` field (only `devDependencies` and `peerDependencies`). | Status: not_done
-- [ ] **Verify `files` field in package.json** — Only `dist/` is published. No source files, tests, or spec. | Status: not_done
-- [ ] **Verify TypeScript declaration output** — `dist/index.d.ts` and `.d.ts.map` files generated correctly. | Status: not_done
+- [x] **Verify zero runtime dependencies** — Confirm package.json has no `dependencies` field (only `devDependencies` and `peerDependencies`). | Status: done
+- [x] **Verify `files` field in package.json** — Only `dist/` is published. No source files, tests, or spec. | Status: done
+- [x] **Verify TypeScript declaration output** — `dist/index.d.ts` and `.d.ts.map` files generated correctly. | Status: done
 - [ ] **Run full test suite** — All tests pass: `npm run test`. | Status: not_done
 - [ ] **Run linter** — No errors: `npm run lint`. | Status: not_done
 - [ ] **Run build** — Clean build: `npm run build`. | Status: not_done
