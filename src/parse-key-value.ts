@@ -5,8 +5,10 @@ import { normalizeHeader, inferValue, stripMarkdown, splitLines } from './utils.
 function buildLineRE(delimiters: string[]): RegExp {
   const escaped = delimiters.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
   const delimGroup = escaped.join('|')
-  // Optional bold markers around key
-  return new RegExp(`^\\s*(?:\\*{2})?([^${escaped.join('')}\\n]+?)(?:\\*{2})?\\s*(?:${delimGroup})\\s*(.*)$`)
+  // Non-greedy .+? finds the first delimiter occurrence; works for both
+  // single-char (:, =) and multi-char (->) delimiters without character-class
+  // escaping issues.
+  return new RegExp(`^\\s*(?:\\*{2})?(.+?)(?:\\*{2})?\\s*(?:${delimGroup})\\s*(.*)$`)
 }
 
 export function parseKeyValue(

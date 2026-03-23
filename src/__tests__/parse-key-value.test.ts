@@ -98,4 +98,24 @@ host: localhost
     const result = parseKeyValue(md, { delimiters: ['->'] })
     expect(result['key']).toBe('value')
   })
+
+  it('handles multi-char delimiter with hyphenated keys', () => {
+    const md = `long-key -> some value`
+    const result = parseKeyValue(md, { delimiters: ['->'] })
+    expect(result['longKey']).toBe('some value')
+  })
+
+  it('does not throw with hyphen delimiter', () => {
+    const md = `key - value`
+    expect(() => parseKeyValue(md, { delimiters: ['-'] })).not.toThrow()
+    const result = parseKeyValue(md, { delimiters: ['-'] })
+    expect(result['key']).toBe('value')
+  })
+
+  it('parses definition-list style key-value', () => {
+    const md = `**Name**\n: Alice\n\n**Role**\n: Engineer`
+    const result = parseKeyValue(md)
+    expect(result['name']).toBe('Alice')
+    expect(result['role']).toBe('Engineer')
+  })
 })

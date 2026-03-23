@@ -5,12 +5,24 @@ const TABLE_ROW_RE = /^\s*\|.+\|\s*$/
 const SEPARATOR_RE = /^\s*\|[\s|:-]+\|\s*$/
 
 function splitRow(line: string): string[] {
-  // Remove leading/trailing pipe, then split on |
-  return line
-    .replace(/^\s*\|/, '')
-    .replace(/\|\s*$/, '')
-    .split('|')
-    .map(cell => cell.trim())
+  // Remove leading/trailing pipe, then split on unescaped |
+  const inner = line.replace(/^\s*\|/, '').replace(/\|\s*$/, '')
+  // Split on | that is NOT preceded by a backslash
+  const cells: string[] = []
+  let current = ''
+  for (let i = 0; i < inner.length; i++) {
+    if (inner[i] === '|' && inner[i - 1] !== '\\') {
+      cells.push(current.trim())
+      current = ''
+    } else if (inner[i] === '\\' && inner[i + 1] === '|') {
+      // Skip the backslash, next iteration adds the |
+      continue
+    } else {
+      current += inner[i]
+    }
+  }
+  cells.push(current.trim())
+  return cells
 }
 
 function extractTables(lines: string[]): string[][] {

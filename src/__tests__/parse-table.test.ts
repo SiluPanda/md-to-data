@@ -108,4 +108,17 @@ describe('parseTable', () => {
     const rows = parseTable('No table here')
     expect(rows).toEqual([])
   })
+
+  it('handles escaped pipes in cell content', () => {
+    const md = `
+| Expression | Result |
+|-----------|--------|
+| a \\| b | true |
+| x \\| y \\| z | false |
+`
+    const rows = parseTable(md)
+    expect(rows).toHaveLength(2)
+    expect(rows[0]).toMatchObject({ expression: 'a | b', result: true })
+    expect(rows[1]).toMatchObject({ expression: 'x | y | z', result: false })
+  })
 })
