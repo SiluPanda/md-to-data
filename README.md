@@ -180,7 +180,6 @@ parseList('* Star\n+ Plus\n- Dash');
 ```typescript
 interface ParseListOptions {
   inference?: InferenceOptions;  // type inference configuration
-  nested?: boolean;              // parse nested lists (default: true)
 }
 ```
 
@@ -286,7 +285,6 @@ parseSections(md);
 interface ParseSectionOptions {
   minLevel?: number;  // minimum heading level to recognize (default: 1)
   maxLevel?: number;  // maximum heading level to recognize (default: 6)
-  inference?: InferenceOptions;  // type inference configuration
 }
 ```
 
@@ -377,7 +375,6 @@ interface InferenceOptions {
   numbers?: boolean;   // "42" -> 42, "3.14" -> 3.14 (default: true)
   booleans?: boolean;  // "true"/"yes" -> true, "false"/"no" -> false (default: true)
   nulls?: boolean;     // "" / "null" / "n/a" / "-" / "none" / "nil" -> null (default: true)
-  dates?: boolean;     // date string parsing (default: false)
 }
 ```
 
@@ -581,11 +578,11 @@ import type {
 | Type | Description |
 |------|-------------|
 | `HeaderNormalization` | Union of `'preserve'`, `'camelCase'`, `'snake_case'`, `'kebab-case'`, `'lowercase'` |
-| `InferenceOptions` | Configuration for type inference (numbers, booleans, nulls, dates) |
+| `InferenceOptions` | Configuration for type inference (numbers, booleans, nulls) |
 | `ParseTableOptions` | Options for `parseTable`: `tableIndex`, `headerNormalization`, `inference` |
-| `ParseListOptions` | Options for `parseList`: `inference`, `nested` |
+| `ParseListOptions` | Options for `parseList`: `inference` |
 | `ParseKeyValueOptions` | Options for `parseKeyValue`: `delimiters`, `inference`, `headerNormalization` |
-| `ParseSectionOptions` | Options for `parseSections`: `minLevel`, `maxLevel`, `inference` |
+| `ParseSectionOptions` | Options for `parseSections`: `minLevel`, `maxLevel` |
 | `CheckboxItem` | `{ text: string; checked: boolean }` -- a parsed checkbox list item |
 | `ParseResult` | Return type of `parse()`: `tables`, `lists`, `keyValues`, `sections`, `raw` |
 | `Parser` | Interface for the object returned by `createParser()` |

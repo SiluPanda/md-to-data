@@ -1,4 +1,4 @@
-import type { Parser, ParseTableOptions, ParseListOptions, ParseKeyValueOptions, ParseSectionOptions, ParseResult } from './types.js'
+import type { Parser, ParseTableOptions, ParseListOptions, ParseKeyValueOptions, ParseSectionOptions, ParseResult, InferenceOptions } from './types.js'
 import { parse } from './parse.js'
 import { parseTable } from './parse-table.js'
 import { parseList } from './parse-list.js'
@@ -12,6 +12,16 @@ export interface ParserDefaults {
   sectionOptions?: ParseSectionOptions
 }
 
+function mergeInference(
+  base?: InferenceOptions,
+  override?: InferenceOptions,
+): InferenceOptions | undefined {
+  if (!base && !override) return undefined
+  if (!base) return override
+  if (!override) return base
+  return { ...base, ...override }
+}
+
 export function createParser(defaults?: ParserDefaults): Parser {
   return {
     parse(markdown: string): ParseResult {
@@ -19,15 +29,27 @@ export function createParser(defaults?: ParserDefaults): Parser {
     },
 
     parseTable(markdown: string, options?: ParseTableOptions) {
-      return parseTable(markdown, { ...defaults?.tableOptions, ...options })
+      return parseTable(markdown, {
+        ...defaults?.tableOptions,
+        ...options,
+        inference: mergeInference(defaults?.tableOptions?.inference, options?.inference),
+      })
     },
 
     parseList(markdown: string, options?: ParseListOptions) {
-      return parseList(markdown, { ...defaults?.listOptions, ...options })
+      return parseList(markdown, {
+        ...defaults?.listOptions,
+        ...options,
+        inference: mergeInference(defaults?.listOptions?.inference, options?.inference),
+      })
     },
 
     parseKeyValue(markdown: string, options?: ParseKeyValueOptions) {
-      return parseKeyValue(markdown, { ...defaults?.keyValueOptions, ...options })
+      return parseKeyValue(markdown, {
+        ...defaults?.keyValueOptions,
+        ...options,
+        inference: mergeInference(defaults?.keyValueOptions?.inference, options?.inference),
+      })
     },
 
     parseSections(markdown: string, options?: ParseSectionOptions) {

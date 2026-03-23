@@ -5,7 +5,6 @@ export interface InferenceOptions {
   numbers?: boolean   // default true — "42" → 42
   booleans?: boolean  // default true — "true"/"yes"/"1" → true
   nulls?: boolean     // default true — "" / "null" / "n/a" → null
-  dates?: boolean     // default false
 }
 
 export interface ParseTableOptions {
@@ -16,7 +15,6 @@ export interface ParseTableOptions {
 
 export interface ParseListOptions {
   inference?: InferenceOptions
-  nested?: boolean   // default true — parse nested lists
 }
 
 export interface ParseKeyValueOptions {
@@ -28,7 +26,6 @@ export interface ParseKeyValueOptions {
 export interface ParseSectionOptions {
   minLevel?: number   // minimum heading level (default 1)
   maxLevel?: number   // maximum heading level (default 6)
-  inference?: InferenceOptions
 }
 
 export interface CheckboxItem {
