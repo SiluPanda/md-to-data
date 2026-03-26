@@ -121,4 +121,15 @@ describe('parseTable', () => {
     expect(rows[0]).toMatchObject({ expression: 'a | b', result: true })
     expect(rows[1]).toMatchObject({ expression: 'x | y | z', result: false })
   })
+
+  it('handles escaped backslashes before pipes in cell content', () => {
+    const md = `
+| Col1 | Col2 | Col3 |
+|------|------|------|
+| a\\\\| b | c |
+`
+    const rows = parseTable(md)
+    expect(rows).toHaveLength(1)
+    expect(rows[0]).toMatchObject({ col1: 'a\\', col2: 'b', col3: 'c' })
+  })
 })
