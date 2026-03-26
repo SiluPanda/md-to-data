@@ -11,12 +11,15 @@ function splitRow(line: string): string[] {
   const cells: string[] = []
   let current = ''
   for (let i = 0; i < inner.length; i++) {
-    if (inner[i] === '|' && inner[i - 1] !== '\\') {
+    if (inner[i] === '\\' && i + 1 < inner.length && inner[i + 1] === '\\') {
+      current += '\\'
+      i++
+    } else if (inner[i] === '\\' && i + 1 < inner.length && inner[i + 1] === '|') {
+      current += '|'
+      i++
+    } else if (inner[i] === '|') {
       cells.push(current.trim())
       current = ''
-    } else if (inner[i] === '\\' && inner[i + 1] === '|') {
-      // Skip the backslash, next iteration adds the |
-      continue
     } else {
       current += inner[i]
     }
